@@ -48,7 +48,7 @@ jobs:
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
-        server_port: 465
+        server_port: 587
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
         subject: Guru99 Automation - Test Run Finished
@@ -64,4 +64,4 @@ jobs:
         to: mha_m123@yahoo.com
         from: Guru99 Automation <${{ secrets.MAIL_USERNAME }}>
         attachments: allure-report.zip
-        secure: true
+        secure: false # Use STARTTLS for Port 587

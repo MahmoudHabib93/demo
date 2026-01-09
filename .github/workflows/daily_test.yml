@@ -31,6 +31,18 @@ jobs:
         path: allure-results
         retention-days: 7
 
+    - name: Generate Allure Report
+      if: always()
+      run: mvn allure:report
+
+    - name: Zip Allure Report
+      if: always()
+      run: |
+        sudo apt-get install -y zip
+        cd target/site/allure-maven-plugin
+        zip -r ../../../allure-report.zip .
+        cd ../../..
+
     - name: Send Email Notification
       if: always()
       uses: dawidd6/action-send-mail@v3
@@ -45,8 +57,11 @@ jobs:
           
           Status: ${{ job.status }}
           
-          You can view the full results and artifacts in the GitHub Actions tab:
+          The Allure Report is attached to this email as a ZIP file.
+          
+          You can also view the artifacts in the GitHub Actions tab:
           https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         to: mha_m123@yahoo.com
         from: Guru99 Automation <${{ secrets.MAIL_USERNAME }}>
+        attachments: allure-report.zip
         secure: true

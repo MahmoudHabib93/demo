@@ -35,33 +35,11 @@ jobs:
       if: always()
       run: mvn allure:report
 
-    - name: Zip Allure Report
+    - name: Upload Allure Report
       if: always()
-      run: |
-        sudo apt-get install -y zip
-        cd target/site/allure-maven-plugin
-        zip -r ../../../allure-report.zip .
-        cd ../../..
-
-    - name: Send Email Notification
-      if: always()
-      uses: dawidd6/action-send-mail@v3
+      uses: actions/upload-artifact@v4
       with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.MAIL_USERNAME }}
-        password: ${{ secrets.MAIL_PASSWORD }}
-        subject: Guru99 Automation - Test Run Finished
-        body: |
-          The automated test pipeline has completed.
-          
-          Status: ${{ job.status }}
-          
-          The Allure Report is attached to this email as a ZIP file.
-          
-          You can also view the artifacts in the GitHub Actions tab:
-          https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        to: mha_m123@yahoo.com
-        from: Guru99 Automation <${{ secrets.MAIL_USERNAME }}>
-        attachments: allure-report.zip
-        secure: false # Use STARTTLS for Port 587
+        name: allure-report
+        path: target/site/allure-maven-plugin/
+        retention-days: 30
+

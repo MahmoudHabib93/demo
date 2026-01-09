@@ -30,3 +30,23 @@ jobs:
         name: allure-results
         path: allure-results
         retention-days: 7
+
+    - name: Send Email Notification
+      if: always()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.MAIL_USERNAME }}
+        password: ${{ secrets.MAIL_PASSWORD }}
+        subject: Guru99 Automation - Test Run Finished
+        body: |
+          The automated test pipeline has completed.
+          
+          Status: ${{ job.status }}
+          
+          You can view the full results and artifacts in the GitHub Actions tab:
+          https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        to: mha_m123@yahoo.com
+        from: Guru99 Automation <${{ secrets.MAIL_USERNAME }}>
+        secure: true

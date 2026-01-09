@@ -1,0 +1,14 @@
+target/
+.idea/
+*.iml
+.settings/
+.classpath
+.project
+.vscode/
+bin/
+tools/
+.allure/
+allure-results/
+allure-report/
+test-output/
+*.log
